@@ -3,7 +3,7 @@ ZTE Fantastic Algorithm Challenge 2017, Dijkstra team, Preliminary contest
 
 We stood out among the thousands of participating teams and successfully joined the final in Xi'an with other dozens of teams, and eventually won second place.
 
-At preliminary round I designed the whole algorithm and tested with MATLAB, while after it my teammate rewrote to Python and submitted. This is for the reason that I want to reorganize it to C++, also review my coding skill. 
+At preliminary round I designed the whole algorithm and tested with MATLAB, while after it my teammate rewrote to Python and submitted. This project is for the reason that I want to reorganize it to C++, also review my coding skill. 
 
 ## Question:
 最强大脑中的收官蜂巢迷宫变态级挑战，相信大家都叹为观止！最强大脑收官战打响后，收视率节节攀升，就连蚁后也不时出题难为一下她的子民们。在动物世界中，称得上活地图的，除了蜜蜂，蚂蚁当仁不让。在复杂多变的蚁巢中， 蚂蚁总是能以最快、最高效的方式游历在各个储藏间（存储食物）。今天，她看完最新一期节目，又发布了一项新任务：小蚁同学，我需要玉米库的玉米，再要配点水果，去帮我找来吧。小蚁正准备出发，蚁后又说：哎呀，回来，我还没说完呢，还有若干要求如下：
