@@ -2,6 +2,7 @@
 ZTE Fantastic Algorithm Challenge 2017, Dijkstra team, Preliminary contest
 
 We stood out among the thousands of participating teams and successfully joined the final in Xi'an with other dozens of teams, and eventually won second place.
+
 At preliminary round I designed the whole algorithm and tested with MATLAB, while after it my teammate rewrote to Python. This is for the reason that I want to reorganize it to C++, also review my coding skill. 
 
 ## Question:
