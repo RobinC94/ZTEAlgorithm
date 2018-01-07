@@ -182,9 +182,38 @@ void ZTEGraph::Display(bool showVexElem)
 Path ZTEGraph::DijkstraPath(Vex v1, Vex v2)
 {
 	std::vector<int> distance(vexNum, MAX_DIS);
-	std::vector<Vex> previous(vexNum);
-	std::list<Vex> known;
+	std::vector<Vex> previous(vexNum, v1);
+	std::vector<bool> known(vexNum, false);
 
+	distance[v1] = 0;
+	while (1) {
+		int minDist = MAX_DIS;
+		Vex smallVex = -1;
+		for (int i = 0; i < vexNum; i++) {
+			if (distance[i] <= minDist && known[i] == false) {
+				smallVex = i;
+				minDist = distance[i];
+			}
+		}
+		if(smallVex < 0) break;
 
+		known[smallVex] = true;
 
+		for (int i = 0; i < vexNum; i++) {
+			if (matrix[smallVex][i] > 0 && known[i] == false) {
+				if (distance[smallVex] + matrix[smallVex][i] < distance[i]) {
+					distance[i] = distance[smallVex] + matrix[smallVex][i];
+					previous[i] = smallVex;
+				}
+			}
+		}
+	}
+
+	Path shortPath(1,v2);
+
+	while (shortPath.front() != v1) {
+		shortPath.insert(shortPath.begin(), previous[shortPath.front()]);
+	}
+
+	return shortPath;
 }

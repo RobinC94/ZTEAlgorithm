@@ -19,6 +19,12 @@ int main(int argc, char *argv[])
 	InitGraph(graph1);
 
 	graph1.Display();
+	Path shortcut = graph1.DijkstraPath(2,16);
+
+	for (auto&ele : shortcut) {
+		std::cout << ele << ' ';
+	}
+
 	
 	getchar();
 	return 0;

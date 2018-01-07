@@ -10,7 +10,7 @@ namespace ZTE_crb {
 	using Edge = std::pair<Vex, Vex>;
 	using Matrix = std::vector<Path>;
 
-	const int MAX_VEX = 1000;
-	const int MAX_EDGE = 1000;
-	const int MAX_DIS = 1000;
+	const int MAX_VEX = INT_MAX;
+	const int MAX_EDGE = INT_MAX;
+	const int MAX_DIS = INT_MAX;
 }
