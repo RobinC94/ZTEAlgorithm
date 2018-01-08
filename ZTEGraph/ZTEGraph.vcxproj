@@ -23,6 +23,7 @@
     <ProjectGuid>{61A7DB90-CEB7-48A9-BBED-990E6E00D28C}</ProjectGuid>
     <RootNamespace>ZTRGraph</RootNamespace>
     <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
+    <ProjectName>ZTEGraph</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
