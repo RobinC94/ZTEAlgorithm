@@ -19,7 +19,7 @@ namespace ZTE_crb {
 		int GetVexNum() { return vexNum; };
 		int GetEdgeNum() { return edgeNum; };
 
-		void LoadGraph(const char* fileName);
+		void LoadGraph(const char* fileName);	
 		void SetVex(Vex v, VexType t);
 		void SetEdge(Vex v1, Vex v2, int weight, EdgeType t);
 

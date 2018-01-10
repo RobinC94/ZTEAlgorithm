@@ -1,4 +1,5 @@
 #include "Graph.h"
+#include "Genetic.h"
 
 using namespace ZTE_crb;
 
@@ -15,7 +16,7 @@ void InitGraph(ZTEGraph &graph)
 
 int main(int argc, char *argv[])
 {
-	ZTEGraph graph1;
+	/*ZTEGraph graph1;
 	InitGraph(graph1);
 
 	graph1.Display();
@@ -27,5 +28,28 @@ int main(int argc, char *argv[])
 
 	
 	getchar();
+	return 0;*/
+
+	std::thread thrd1([&] {
+		int c = 1;
+		for (int i = 0; i < 100; ++i)
+		{
+			std::cout << c << ":" << i << std::endl;
+		}
+		std::cout << c << "end" << std::endl;
+	});
+
+	std::thread thrd2([&] {
+		int c = 2;
+		for (int i = 0; i < 100; ++i)
+		{
+			std::cout << c << ":" << i << std::endl;
+		}
+		std::cout << c << "end" << std::endl;
+	});
+
+	thrd1.join();
+	thrd2.join();
+	system("pause");
 	return 0;
 }

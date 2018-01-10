@@ -31,7 +31,7 @@ ZTEGraph& ZTEGraph::operator=(const ZTEGraph &copy) {
 
 void ZTEGraph::LoadGraph(const char* fileName)
 {
-	std::ifstream fin("Graph1.csv");
+	std::ifstream fin(fileName);
 	if (!fin.is_open()) throw std::logic_error("文件不存在！");
 	std::string line;
 	vexNum = 0;
