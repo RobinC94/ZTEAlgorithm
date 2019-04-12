@@ -13,4 +13,6 @@ SET(SOURCE_FILES
         ${DIR_SRCS}
         )
 
+add_subdirectory(test)
+
 add_executable(ZTEAlgorithm ${SOURCE_FILES} main.cpp)
