@@ -3,9 +3,12 @@
 #include <iostream>
 #include <fstream>
 #include <regex>
-#include "CommonType.h"
 #include <map>
-#include <list>
+#include <set>
+#include <algorithm>
+#include <random>
+
+#include "CommonType.h"
 
 namespace ZTE_crb {
     class ZTEGraph
@@ -13,25 +16,33 @@ namespace ZTE_crb {
     public:
         ZTEGraph() {};
         ~ZTEGraph() {};
+        ZTEGraph(int _maxVexNum) : maxVexNum(_maxVexNum) {};
         ZTEGraph(const ZTEGraph &copy);
         ZTEGraph& operator=(const ZTEGraph &copy);
 
-        int GetVexNum() { return vexNum; };
-        int GetEdgeNum() { return edgeNum; };
+        int GetVexNum() const { return vexNum; };
+        int GetEdgeNum() const { return edgeNum; };
 
         void LoadGraph(const char* fileName);
         void SetVex(const Vex &v, const VexType &t);
         void SetEdge(const Vex &v1, const Vex &v2, const int &weight, const EdgeType &t);
+        void SetMaxVexNum(int vexNum) { maxVexNum = vexNum; };
 
-        Path DijkstraPath(const Vex &v1, const Vex &v2);
+        Path GeneratePath();
+        Path DijkstraPath(const Vex &v1, const Vex &v2) const;
 
-        void Display(bool showVexElem = true) ;
+        void DisplayGraph(bool showVexElem = true) const;
+        void DisplayPath(const Path &path) const;
+
+        int CalculatePathScore(const Path &path) const;
 
     protected:
         int vexNum, edgeNum;
         Matrix matrix;
+        int maxVexNum;
 
-        std::map<VexType, std::list<Vex>> m_Vexs;
-        std::map<EdgeType, std::list<Edge>> m_Edge;
+        std::map<VexType, std::set<Vex>> m_Vexs;
+        std::map<EdgeType, std::set<Edge>> m_Edge;
+
     };
 }

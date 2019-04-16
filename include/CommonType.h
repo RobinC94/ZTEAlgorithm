@@ -18,4 +18,10 @@ namespace ZTE_crb {
     const int MAX_VEX = INT_MAX;
     const int MAX_EDGE = INT_MAX;
     const int MAX_DIS = INT_MAX;
+
+    const int FORBID_VEX_VALUE = 5000;
+    const int FORBID_EDGE_VALUE = 5000;
+    const int MUST_VEX_VALUE = 500;
+    const int MUST_EDGE_VALUE = 500;
+    const int OVER_VEX_VALUE = 1000;
 }

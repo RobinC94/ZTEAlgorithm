@@ -24,8 +24,11 @@ download_project(
 
 add_subdirectory(${googletest_SOURCE_DIR} ${googletest_BINARY_DIR} EXCLUDE_FROM_ALL)
 
-set(test_SRCS ../src/ZTEGraph.cpp)
+set(test_SRCS ../src/ZTEGraph.cpp ../src/ZTEGenetic.cpp)
 
-add_executable(runUnitTests ${test_SRCS} ZTEGraph_test.cpp)
-target_link_libraries(runUnitTests gtest)
+add_executable(runGraphTests ${test_SRCS} ZTEGraph_test.cpp )#ZTEGenetic_test.cpp)
+target_link_libraries(runGraphTests gtest)
+
+add_executable(runGeneticTests ${test_SRCS} ZTEGenetic_test.cpp)
+target_link_libraries(runGeneticTests gtest)
 #add_test(runUnitTests runUnitTests) #included in all tutorials but I don't know what it actually does.
