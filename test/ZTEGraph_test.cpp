@@ -58,6 +58,8 @@ TEST_F(GraphTester, TestDisplay) {
 TEST_F(GraphTester, TestDijkstra) {
     Path shortcut_ = graph_.DijkstraPath(0, 4);
     graph_.DisplayPath(shortcut_);
+    shortcut_ = graph_.DijkstraPath(5, 5);
+    graph_.DisplayPath(shortcut_);
 }
 
 TEST_F(GraphTester, TestPath) {

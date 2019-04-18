@@ -29,7 +29,7 @@ namespace ZTE_crb {
         void Crossover();
         void Mutation();
 
-        Path Exchange(Path p1, Path p2);
+        Path Exchange(Path p1, Path p2, int pos);
 
     };
 

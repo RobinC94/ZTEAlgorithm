@@ -30,5 +30,5 @@ add_executable(runGraphTests ${test_SRCS} ZTEGraph_test.cpp )#ZTEGenetic_test.cp
 target_link_libraries(runGraphTests gtest)
 
 add_executable(runGeneticTests ${test_SRCS} ZTEGenetic_test.cpp)
-target_link_libraries(runGeneticTests gtest)
+target_link_libraries(runGeneticTests gtest gmock)
 #add_test(runUnitTests runUnitTests) #included in all tutorials but I don't know what it actually does.
