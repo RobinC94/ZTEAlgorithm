@@ -60,8 +60,30 @@ TEST_F(GeneticTester, TestExchange) {
     //EXPECT_THAT(newPath_, ElementsAre(0, 1, 9, 11, 10, 5, 2, 3, 7, 8, 15, 17));
 }
 
+TEST_F(GeneticTester, TestFindNear) {
+    Path path_ = {0, 2, 4, 9, 10, 12, 13, 17};
+    Path tmpPath_;
+    Vex nearest_;
+    nearest_ = genetic_.FindNearestVex(path_, 1, tmpPath_);
+    EXPECT_EQ(nearest_, 2);
+    nearest_ = genetic_.FindNearestVex(path_, 8, tmpPath_);
+    std::cout << "Near:" << nearest_ << std::endl;
+    genetic_.DisplayPath(tmpPath_);
+}
+
+TEST_F(GeneticTester, TestVariation) {
+    Path path_ = {0, 3, 7, 6, 12, 10, 9, 11, 16, 17};
+    Path result_ = genetic_.Variation(path_, 4, 2);
+    genetic_.DisplayPath(result_);
+    path_ = {0, 1, 9, 11, 16, 17};
+    result_ = genetic_.Variation(path_, 7, 7);
+    genetic_.DisplayPath(result_);
+}
+
 TEST_F(GeneticTester, TestEvolution) {
+    std::cout << genetic_.geneticGroup.size() << std::endl;
     genetic_.Evolution();
+    std::cout << genetic_.geneticGroup.size() << std::endl;
 }
 
 int main(int argc, char **argv) {

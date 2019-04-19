@@ -2,6 +2,17 @@
 
 using namespace ZTE_crb;
 
+ZTEGraph::ZTEGraph()
+{
+    m_Vexs[VexType::START] = std::set<Vex>();
+    m_Vexs[VexType::END] = std::set<Vex>();
+    m_Vexs[VexType::MUST] = std::set<Vex>();
+    m_Vexs[VexType::FORBID] = std::set<Vex>();
+
+    m_Edge[EdgeType::MUST] = std::set<Edge>();
+    m_Edge[EdgeType::FORBID] = std::set<Edge>();
+}
+
 ZTEGraph::ZTEGraph(const ZTEGraph &copy) {
     vexNum = copy.vexNum;
     edgeNum = copy.edgeNum;
@@ -39,12 +50,12 @@ void ZTEGraph::LoadGraph(const char* fileName)
 
     std::regex spliter{ "," };
     while (getline(fin, line)) {
-        std::sregex_token_iterator itor(line.begin(), line.end(), spliter, -1);
+        std::sregex_token_iterator iter(line.begin(), line.end(), spliter, -1);
         std::sregex_token_iterator ender;
         Path p;
-        while (itor != ender)
+        while (iter != ender)
         {
-            auto para = *(itor++);
+            auto para = *(iter++);
             Vex v = std::stoi(para);
             p.push_back(v);
             if (p.back() > 0) edgeNum++;
@@ -61,6 +72,7 @@ void ZTEGraph::LoadGraph(const char* fileName)
 void ZTEGraph::SetVex(const Vex &v, const VexType &t)
 {
     if (v < 0 || v >= vexNum) throw std::invalid_argument("Invalid input vex!");
+    std::set<Vex>::iterator iter;
     switch (t)
     {
         case ZTE_crb::VexType::START:
@@ -69,32 +81,20 @@ void ZTEGraph::SetVex(const Vex &v, const VexType &t)
             else throw std::invalid_argument("Start/End point already exists!");
             break;
         case ZTE_crb::VexType::COMMON:
-            for (auto itor = m_Vexs[VexType::MUST].begin(); itor != m_Vexs[VexType::MUST].end(); ++itor)
-            {
-                if (v == (*itor)) {
-                    m_Vexs[VexType::MUST].erase(itor);
-                    goto _LABEL_COMMON_END;
-                }
+            iter = m_Vexs[VexType::MUST].find(v);
+            if (iter != m_Vexs[VexType::MUST].end()){
+                m_Vexs[VexType::MUST].erase(iter);
+                goto _LABEL_COMMON_END;
             }
-            for (auto itor = m_Vexs[VexType::FORBID].begin(); itor != m_Vexs[VexType::FORBID].end(); ++itor)
-            {
-                if (v == (*itor)) {
-                    m_Vexs[VexType::FORBID].erase(itor);
-                    goto _LABEL_COMMON_END;
-                }
+            iter = m_Vexs[VexType::FORBID].find(v);
+            if (iter != m_Vexs[VexType::FORBID].end()){
+                m_Vexs[VexType::FORBID].erase(iter);
             }
         _LABEL_COMMON_END:
             break;
         case ZTE_crb::VexType::MUST:
         case ZTE_crb::VexType::FORBID:
-            for (auto itor = m_Vexs[t].begin(); itor != m_Vexs[t].end(); ++itor)
-            {
-                if (v == (*itor)) goto _LABEL_FM_END;
-            }
             m_Vexs[t].insert(v);
-        _LABEL_FM_END:
-            break;
-        default:
             break;
     }
 }
@@ -110,37 +110,27 @@ void ZTEGraph::SetEdge(const Vex &v1, const Vex &v2, const int &weight, const Ed
     matrix[v1][v2] = weight;
     matrix[v2][v1] = weight;
 
+    std::set<Edge>::iterator iter;
+    Edge e(v1, v2);
+
     switch (t)
     {
         case ZTE_crb::EdgeType::COMMON:
-            for (auto itor = m_Edge[EdgeType::MUST].begin(); itor != m_Edge[EdgeType::MUST].end(); ++itor)
-            {
-                if ((v1 == (*itor).first && v2 == (*itor).second) ||
-                    (v2 == (*itor).first && v1 == (*itor).second)) {
-                    m_Edge[EdgeType::FORBID].erase(itor);
-                    goto _LABEL_COMMON_END;
-                }
+            iter = m_Edge[EdgeType::MUST].find(e);
+            if (iter != m_Edge[EdgeType::MUST].end()) {
+                m_Edge[EdgeType::MUST].erase(iter);
+                goto _LABEL_COMMON_END;
             }
-            for (auto itor = m_Edge[EdgeType::FORBID].begin(); itor != m_Edge[EdgeType::FORBID].end(); ++itor)
-            {
-                if ((v1 == (*itor).first && v2 == (*itor).second) ||
-                    (v2 == (*itor).first && v1 == (*itor).second)) {
-                    m_Edge[EdgeType::FORBID].erase(itor);
-                    goto _LABEL_COMMON_END;
-                }
+            iter = m_Edge[EdgeType::FORBID].find(e);
+            if (iter != m_Edge[EdgeType::FORBID].end()) {
+                m_Edge[EdgeType::FORBID].erase(iter);
+                goto _LABEL_COMMON_END;
             }
         _LABEL_COMMON_END:
             break;
         case ZTE_crb::EdgeType::MUST:
         case ZTE_crb::EdgeType::FORBID:
-            Edge e(v1, v2);
-            for (auto itor = m_Edge[t].begin(); itor != m_Edge[t].end(); ++itor)
-            {
-                if ((v1 == (*itor).first && v2 == (*itor).second) ||
-                    (v2 == (*itor).first && v1 == (*itor).second)) goto _LABEL_FM_END;
-            }
             m_Edge[t].insert(e);
-        _LABEL_FM_END:
             break;
     }
 }
@@ -164,26 +154,19 @@ void ZTEGraph::DisplayGraph(bool showVexElem) const
 
 
     std::cout << std::endl << "Must pass vex:";
-    if (m_Vexs.find(VexType::MUST) != m_Vexs.end()) {
-        for (auto &i: m_Vexs.at(VexType::MUST)) std::cout << "  " << i;
-    }
+    for (auto &i: m_Vexs.at(VexType::MUST)) std::cout << "  " << i;
 
     std::cout << std::endl << "Forbid pass vex:";
-    if (m_Vexs.find(VexType::FORBID) != m_Vexs.end()) {
-        for (auto &i : m_Vexs.at(VexType::FORBID)) std::cout << "  " << i;
-    }
+    for (auto &i : m_Vexs.at(VexType::FORBID)) std::cout << "  " << i;
 
     std::cout << std::endl << "Must pass edge:";
-    if (m_Edge.find(EdgeType::MUST) != m_Edge.end()) {
-        for (auto &pi :m_Edge.at(EdgeType::MUST))
-            std::cout << "  (" << pi.first << "," << pi.second << ")";
-    }
+    for (auto &pi :m_Edge.at(EdgeType::MUST))
+        std::cout << "  (" << pi.first << "," << pi.second << ")";
 
     std::cout << std::endl << "Forbid pass edge:";
-    if (m_Edge.find(EdgeType::MUST) != m_Edge.end()) {
-        for (auto &pi :m_Edge.at(EdgeType::FORBID))
-            std::cout << "  (" << pi.first << "," << pi.second << ")";
-    }
+    for (auto &pi :m_Edge.at(EdgeType::FORBID))
+        std::cout << "  (" << pi.first << "," << pi.second << ")";
+
     std::cout << std::endl;
 }
 
@@ -212,7 +195,9 @@ Path ZTEGraph::DijkstraPath(const Vex &v1, const Vex &v2) const
                 minDist = distance[i];
             }
         }
-        if(smallVex < 0) break;
+        if(smallVex < 0) {
+            break;
+        }
 
         known[smallVex] = true;
 
@@ -260,10 +245,6 @@ Path ZTEGraph::GeneratePath()
             goto _START;
         }
 
-        //std::random_shuffle(selectedList.begin(), selectedList.end());
-        //currentVex = *selectedList.begin();
-
-        //int index = rand() % selectedList.size();
         std::uniform_int_distribution<int> dist(0, selectedList.size()-1);
         int index = dist(mt);
         currentVex = selectedList[index];
@@ -276,8 +257,6 @@ Path ZTEGraph::GeneratePath()
 int ZTEGraph::CalculatePathScore(const Path &path) const
 {
     int score = 0;
-    bool findMustVex = false;
-    bool findMustEdge = false;
     std::set<Vex> passedMustVex;
     std::set<Edge> passedMustEdge;
 
@@ -285,28 +264,20 @@ int ZTEGraph::CalculatePathScore(const Path &path) const
         score += OVER_VEX_VALUE * (path.size() - maxVexNum);
     }
 
-    if (m_Vexs.find(VexType::MUST) != m_Vexs.end()) {
-        score += MUST_VEX_VALUE * (m_Vexs.at(VexType::MUST).size());
-        findMustVex = true;
-    }
-    if (m_Edge.find(EdgeType::MUST) != m_Edge.end()) {
-        score += MUST_EDGE_VALUE * (m_Edge.at(EdgeType::MUST).size());
-        findMustEdge = true;
-    }
+
+    score += MUST_VEX_VALUE * (m_Vexs.at(VexType::MUST).size());
+    score += MUST_EDGE_VALUE * (m_Edge.at(EdgeType::MUST).size());
 
     for (auto iter = path.begin(); iter != path.end(); ++iter) {
-        if (findMustVex) {
-            if (m_Vexs.at(VexType::MUST).find(*iter) != m_Vexs.at(VexType::MUST).end()
+        if (m_Vexs.at(VexType::MUST).find(*iter) != m_Vexs.at(VexType::MUST).end()
                     && passedMustVex.find(*iter) == passedMustVex.end()) {
-                score -= MUST_VEX_VALUE;
-                passedMustVex.insert(*iter);
-            }
+            score -= MUST_VEX_VALUE;
+            passedMustVex.insert(*iter);
+
         }
 
-        if (m_Vexs.find(VexType::FORBID) != m_Vexs.end()) {
-            if (m_Vexs.at(VexType::FORBID).find(*iter) != m_Vexs.at(VexType::FORBID).end()) {
-                score += FORBID_VEX_VALUE;
-            }
+        if (m_Vexs.at(VexType::FORBID).find(*iter) != m_Vexs.at(VexType::FORBID).end()) {
+            score += FORBID_VEX_VALUE;
         }
 
         auto nextIter = iter+1;
@@ -315,27 +286,30 @@ int ZTEGraph::CalculatePathScore(const Path &path) const
             Edge inEdge(*iter, *nextIter);
             Edge outEdge(*nextIter, *iter);
 
-            if (findMustEdge) {
-                if (m_Edge.at(EdgeType::MUST).find(inEdge) != m_Edge.at(EdgeType::MUST).end()
-                    || m_Edge.at(EdgeType::MUST).find(outEdge) != m_Edge.at(EdgeType::MUST).end()) {
-                    if (passedMustEdge.find(inEdge) == passedMustEdge.end()) {
-                        score -= MUST_EDGE_VALUE;
-                        passedMustEdge.insert(inEdge);
-                        passedMustEdge.insert(outEdge);
-                    }
+            if (m_Edge.at(EdgeType::MUST).find(inEdge) != m_Edge.at(EdgeType::MUST).end()
+                || m_Edge.at(EdgeType::MUST).find(outEdge) != m_Edge.at(EdgeType::MUST).end()) {
+                if (passedMustEdge.find(inEdge) == passedMustEdge.end()) {
+                    score -= MUST_EDGE_VALUE;
+                    passedMustEdge.insert(inEdge);
+                    passedMustEdge.insert(outEdge);
                 }
             }
 
-            if (m_Edge.find(EdgeType::FORBID) != m_Edge.end()) {
-                if (m_Edge.at(EdgeType::FORBID).find(inEdge) != m_Edge.at(EdgeType::FORBID).end()
-                    || m_Edge.at(EdgeType::FORBID).find(outEdge) != m_Edge.at(EdgeType::FORBID).end() ) {
-                    score += FORBID_EDGE_VALUE;
-                }
+            if (m_Edge.at(EdgeType::FORBID).find(inEdge) != m_Edge.at(EdgeType::FORBID).end()
+                || m_Edge.at(EdgeType::FORBID).find(outEdge) != m_Edge.at(EdgeType::FORBID).end() ) {
+                score += FORBID_EDGE_VALUE;
             }
         }
-
     }
 
     return score;
+}
 
+int ZTEGraph::CalculatePathDistance(const ZTE_crb::Path &path) const
+{
+    int distance = 0;
+    for (auto iter = path.begin(); iter != path.end()-1; ++iter){
+        distance += matrix[*iter][*(iter+1)];
+    }
+    return distance;
 }

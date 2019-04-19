@@ -1,22 +1,13 @@
 #pragma once
 
-#include <iostream>
-#include <fstream>
-#include <regex>
-#include <map>
-#include <set>
-#include <algorithm>
-#include <random>
-
 #include "CommonType.h"
 
 namespace ZTE_crb {
     class ZTEGraph
     {
     public:
-        ZTEGraph() {};
+        ZTEGraph();
         ~ZTEGraph() {};
-        ZTEGraph(int _maxVexNum) : maxVexNum(_maxVexNum) {};
         ZTEGraph(const ZTEGraph &copy);
         ZTEGraph& operator=(const ZTEGraph &copy);
 
@@ -43,6 +34,8 @@ namespace ZTE_crb {
 
         std::map<VexType, std::set<Vex>> m_Vexs;
         std::map<EdgeType, std::set<Edge>> m_Edge;
+
+        int CalculatePathDistance(const Path &path) const;
 
     };
 }

@@ -29,7 +29,10 @@ namespace ZTE_crb {
         void Crossover();
         void Mutation();
 
-        Path Exchange(Path p1, Path p2, int pos);
+        Path Exchange(const Path &path1, const Path &path2, int pos);
+        Path Variation(const Path &path, Vex target, Vex target2);
+
+        Vex FindNearestVex(const Path &path, Vex vex, Path &shortcut);
 
     };
 

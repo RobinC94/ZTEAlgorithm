@@ -1,10 +1,13 @@
-//
-// Created by Robin.Chen on 2019/4/11.
-//
-
 #pragma once
 
+#include <iostream>
+#include <fstream>
+#include <regex>
 #include <vector>
+#include <map>
+#include <set>
+#include <algorithm>
+#include <random>
 
 namespace ZTE_crb {
     enum class VexType : int{ START, END, COMMON, MUST, FORBID };

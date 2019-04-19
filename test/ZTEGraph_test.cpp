@@ -1,12 +1,13 @@
 #include "gtest/gtest.h"
 
+#include "CxxTestDefs.h"
 #include "ZTEGraph.h"
 
 using namespace ZTE_crb;
 
 class GraphTester : public ZTEGraph, public testing::Test {
 protected:
-    ZTEGraph graph_ = ZTEGraph(9);
+    ZTEGraph graph_ = ZTEGraph();
 
     virtual void SetUp() {
         graph_.LoadGraph("../Graph1.csv");
@@ -34,20 +35,13 @@ TEST_F(GraphTester, TestCopyAndEqual) {
     EXPECT_EQ(graph_equal.GetEdgeNum(), 41);
 }
 
-TEST_F(GraphTester, TestLoadGraph) {
-    graph_.SetVex(7, VexType::MUST);
-    graph_.SetVex(12, VexType::MUST);
-    graph_.SetEdge(2, 4, 2, EdgeType::MUST);
-    graph_.SetEdge(13, 14, 1, EdgeType::MUST);
-    graph_.SetEdge(11, 12, 1, EdgeType::FORBID);
-}
-
 void SetElement(ZTEGraph &graph){
     graph.SetVex(7, VexType::MUST);
     graph.SetVex(12, VexType::MUST);
     graph.SetEdge(2, 4, 2, EdgeType::MUST);
     graph.SetEdge(13, 14, 1, EdgeType::MUST);
     graph.SetEdge(11, 12, 1, EdgeType::FORBID);
+    graph.SetMaxVexNum(9);
 }
 
 TEST_F(GraphTester, TestDisplay) {
@@ -56,7 +50,7 @@ TEST_F(GraphTester, TestDisplay) {
 }
 
 TEST_F(GraphTester, TestDijkstra) {
-    Path shortcut_ = graph_.DijkstraPath(0, 4);
+    Path shortcut_ = graph_.DijkstraPath(2, 13);
     graph_.DisplayPath(shortcut_);
     shortcut_ = graph_.DijkstraPath(5, 5);
     graph_.DisplayPath(shortcut_);
@@ -73,10 +67,16 @@ TEST_F(GraphTester, TestPath) {
 
 TEST_F(GraphTester, TestCalculateScore) {
     SetElement(graph_);
-    Path path_ = graph_.GeneratePath();
+    Path path_ = {0, 3, 7, 6, 5, 12, 13, 16, 17};
     graph_.DisplayPath(path_);
     int score_ = graph_.CalculatePathScore(path_);
-    std::cout << "Score: " << score_ << std::endl;
+    EXPECT_EQ(score_, 1012);
+}
+
+TEST_F(GraphTester, TestCalculateDistance) {
+    Path path_ = {0, 2, 4, 5, 12, 13, 15, 17};
+    int dist_ = graph_.CalculatePathDistance(path_);
+    EXPECT_EQ(dist_, 15);
 }
 
 int main(int argc, char **argv) {
