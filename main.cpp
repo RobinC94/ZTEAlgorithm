@@ -1,29 +1,30 @@
-#include "include/ZTEGraph.h"
+#include "ZTEGenetic.h"
 
 using namespace ZTE_crb;
 
-void InitGraph(ZTEGraph &graph)
+void InitGenetic(ZTEGenetic &genetic)
 {
-    graph.LoadGraph("./Graph1.csv");
-    // graph.LoadGraph("/Users/robin.chen/ClionProjects/ZTEAlgorithm/Graph1.csv");
-    graph.SetVex(7, VexType::MUST);
-    graph.SetVex(12, VexType::MUST);
-    graph.SetEdge(2, 4, 2, EdgeType::MUST);
-    graph.SetEdge(13, 14, 1, EdgeType::MUST);
-    graph.SetEdge(11, 12, 1, EdgeType::FORBID);
+    genetic.LoadGraph("../Graph1.csv");
+    genetic.SetVex(7, VexType::MUST);
+    genetic.SetVex(12, VexType::MUST);
+    genetic.SetEdge(2, 4, 2, EdgeType::MUST);
+    genetic.SetEdge(13, 14, 1, EdgeType::MUST);
+    genetic.SetEdge(11, 12, 1, EdgeType::FORBID);
+    genetic.InitGenetic();
 
 }
 
 int main(int argc, char *argv[]) {
-    ZTEGraph graph1;
-    InitGraph(graph1);
+    ZTEGenetic genetic1 = ZTEGenetic(100, 9);
+    InitGenetic(genetic1);
+    genetic1.DisplayGraph();
 
-    graph1.Display();
-    Path shortcut = graph1.DijkstraPath(2, 16);
-
-    for (auto &ele : shortcut) {
-        std::cout << ele << ' ';
+    for (int i = 0; i < 30; ++i){
+        genetic1.GeneticInfo();
+        genetic1.Evolution();
     }
+
+    genetic1.GeneticInfo();
 
     getchar();
     return 0;

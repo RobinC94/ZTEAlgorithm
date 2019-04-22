@@ -167,7 +167,7 @@ void ZTEGraph::DisplayGraph(bool showVexElem) const
     for (auto &pi :m_Edge.at(EdgeType::FORBID))
         std::cout << "  (" << pi.first << "," << pi.second << ")";
 
-    std::cout << std::endl;
+    std::cout << std::endl << std::endl;
 }
 
 void ZTEGraph::DisplayPath(const Path &path) const
@@ -186,7 +186,7 @@ Path ZTEGraph::DijkstraPath(const Vex &v1, const Vex &v2) const
     std::vector<bool> known(vexNum, false);
 
     distance[v1] = 0;
-    while (1) {
+    while (true) {
         int minDist = MAX_DIS;
         Vex smallVex = -1;
         for (int i = 0; i < vexNum; i++) {
@@ -245,8 +245,8 @@ Path ZTEGraph::GeneratePath()
             goto _START;
         }
 
-        std::uniform_int_distribution<int> dist(0, selectedList.size()-1);
-        int index = dist(mt);
+        std::uniform_int_distribution<size_t> dist(0, selectedList.size()-1);
+        size_t index = dist(mt);
         currentVex = selectedList[index];
     }
 

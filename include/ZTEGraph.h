@@ -28,7 +28,7 @@ namespace ZTE_crb {
         int CalculatePathScore(const Path &path) const;
 
     protected:
-        int vexNum, edgeNum;
+        size_t vexNum, edgeNum;
         Matrix matrix;
         int maxVexNum;
 

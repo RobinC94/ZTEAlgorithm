@@ -8,6 +8,7 @@
 #include <set>
 #include <algorithm>
 #include <random>
+#include <iterator>
 
 namespace ZTE_crb {
     enum class VexType : int{ START, END, COMMON, MUST, FORBID };

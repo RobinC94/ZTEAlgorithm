@@ -9,15 +9,15 @@ namespace ZTE_crb {
     public:
         ZTEGenetic() {};
         ~ZTEGenetic() {};
-        ZTEGenetic(int _geneticSize, int _generations, int _maxVexNum = 9,
+        ZTEGenetic(int _geneticSize, int _maxVexNum = 9,
                    double _crossoverRate = 0.1, double _mutationRate = 0.05) :
                            geneticSize(_geneticSize),
-                           generations(_generations),
                            crossoverRate(_crossoverRate),
                            mutationRate(_mutationRate) { maxVexNum = _maxVexNum; };
 
         void InitGenetic();
-        void Evolution();
+        void Evolution( bool verbose = false );
+        void GeneticInfo() const;
 
     protected:
         std::vector <Path> geneticGroup;
@@ -28,8 +28,10 @@ namespace ZTE_crb {
 
         void Crossover();
         void Mutation();
+        void AddGenetics();
+        Path FindBestPath() const;
 
-        Path Exchange(const Path &path1, const Path &path2, int pos);
+        Path Exchange(const Path &path1, const Path &path2, size_t pos);
         Path Variation(const Path &path, Vex target, Vex target2);
 
         Vex FindNearestVex(const Path &path, Vex vex, Path &shortcut);

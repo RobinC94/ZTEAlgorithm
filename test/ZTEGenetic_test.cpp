@@ -9,7 +9,7 @@ using namespace ZTE_crb;
 
 class GeneticTester : public ZTEGenetic, public testing::Test {
 protected:
-    ZTEGenetic genetic_ = ZTEGenetic(100, 30);
+    ZTEGenetic genetic_ = ZTEGenetic(100);
 
     virtual void SetUp() {
         genetic_.LoadGraph("../Graph1.csv");
@@ -18,8 +18,6 @@ protected:
         genetic_.SetEdge(2, 4, 2, EdgeType::MUST);
         genetic_.SetEdge(13, 14, 1, EdgeType::MUST);
         genetic_.SetEdge(11, 12, 1, EdgeType::FORBID);
-
-        srand((unsigned)time(NULL));
 
         genetic_.InitGenetic();
     }
@@ -81,9 +79,14 @@ TEST_F(GeneticTester, TestVariation) {
 }
 
 TEST_F(GeneticTester, TestEvolution) {
-    std::cout << genetic_.geneticGroup.size() << std::endl;
-    genetic_.Evolution();
-    std::cout << genetic_.geneticGroup.size() << std::endl;
+    Path best_ = genetic_.FindBestPath();
+    genetic_.DisplayPath(best_);
+    genetic_.Evolution(true);
+    best_ = genetic_.FindBestPath();
+    genetic_.DisplayPath(best_);
+    genetic_.Evolution(true);
+    best_ = genetic_.FindBestPath();
+    genetic_.DisplayPath(best_);
 }
 
 int main(int argc, char **argv) {
