@@ -11,7 +11,7 @@ void ZTEGenetic::InitGenetic()
     generations = 1;
 }
 
-size_t binarySearch(std::vector<double> num, double value) {
+size_t ZTE_crb::binarySearch(std::vector<double> num, double value) {
     size_t begin = 0, end= num.size()-1;
     while(begin < end-1){
         size_t mid = (begin + end) / 2;
@@ -32,6 +32,8 @@ void ZTEGenetic::Evolution(bool verbose)
 {
     std::random_device rd;
     std::mt19937 mt(rd());
+
+    Path currentBest = FindBestPath();
 
     if (verbose)
         std::cout << "current generation size: " << geneticGroup.size() << std::endl;
@@ -56,11 +58,12 @@ void ZTEGenetic::Evolution(bool verbose)
     std::uniform_real_distribution<double> distRouletteWheel(0.0, fitValueList[fitValueList.size()-1]);
     std::vector<Path> newGenerationGroup;
 
-    for(size_t i = 0; i < geneticSize; ++i){
+    for(size_t i = 0; i < geneticSize-1; ++i){
         double randomFitValue = distRouletteWheel(mt);
         size_t selectedGeneIndex = binarySearch(fitValueList, randomFitValue);
         newGenerationGroup.push_back(geneticGroup[selectedGeneIndex]);
     }
+    newGenerationGroup.push_back(currentBest);
     geneticGroup = newGenerationGroup;
     generations++;
 }
@@ -84,7 +87,8 @@ void ZTEGenetic::Crossover()
                 std::uniform_int_distribution<size_t> distLen(0, len-2);
                 size_t pos = distLen(mt);
                 Path newPath = Exchange(*p1_iter, *p2_iter, pos);
-                newGenerations.push_back(newPath);
+                if (newPath.size() < GetVexNum())
+                    newGenerations.push_back(newPath);
             }
         }
     }
@@ -116,14 +120,16 @@ void ZTEGenetic::Mutation()
                     std::advance(e_iter, randomIndex);
                     Edge selectedEdge = *e_iter;
                     Path newPath = Variation(*p_iter, selectedEdge.first, selectedEdge.second);
-                    newGenerations.push_back(newPath);
+                    if (newPath.size() < GetVexNum())
+                        newGenerations.push_back(newPath);
                 }
                 else{
                     auto v_iter = m_Vexs[VexType::MUST].begin();
                     std::advance(v_iter, randomSelect);
                     Vex selectedVex = *v_iter;
                     Path newPath = Variation(*p_iter, selectedVex, selectedVex);
-                    newGenerations.push_back(newPath);
+                    if (newPath.size() < GetVexNum())
+                        newGenerations.push_back(newPath);
                 }
             }
         }
@@ -212,7 +218,7 @@ void ZTEGenetic::AddGenetics()
     }
 }
 
-Path ZTEGenetic::FindBestPath() const
+Path ZTEGenetic::FindBestPath(bool verbose) const
 {
     int minScore = INT_MAX;
     Path result;
@@ -223,7 +229,8 @@ Path ZTEGenetic::FindBestPath() const
             result = path;
         }
     }
-    std::cout << "Best path score: " << minScore << std::endl;
+    if (verbose)
+        std::cout << "Best path score: " << minScore << std::endl;
 
     return result;
 }
@@ -231,6 +238,6 @@ Path ZTEGenetic::FindBestPath() const
 void ZTEGenetic::GeneticInfo() const
 {
     std::cout << "current genaration: " << generations << std::endl;
-    Path best = FindBestPath();
+    Path best = FindBestPath(true);
     DisplayPath(best);
 }

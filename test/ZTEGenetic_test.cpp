@@ -9,7 +9,7 @@ using namespace ZTE_crb;
 
 class GeneticTester : public ZTEGenetic, public testing::Test {
 protected:
-    ZTEGenetic genetic_ = ZTEGenetic(100);
+    ZTEGenetic genetic_ = ZTEGenetic(100, 9, 0.1, 0.05);
 
     virtual void SetUp() {
         genetic_.LoadGraph("../Graph1.csv");
@@ -27,6 +27,12 @@ protected:
 TEST(TestTest, EQandTRUE) {
     EXPECT_EQ(1, 1);
     EXPECT_TRUE(true);
+}
+
+TEST(TestTest, TestBinarySearch) {
+    std::vector<double> array_ = {0.1, 0.3, 0.7, 0.9, 1.2, 1.6, 1.7, 1.8, 2.0};
+    EXPECT_EQ(binarySearch(array_, 0.4), 1);
+    EXPECT_EQ(binarySearch(array_, 1.5), 4);
 }
 
 TEST_F(GeneticTester, TestGetVex) {

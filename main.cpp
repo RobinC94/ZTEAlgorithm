@@ -2,6 +2,12 @@
 
 using namespace ZTE_crb;
 
+int generations = 100;
+int genetics = 200;
+int maxNum = 9;
+double crossRate = 0.05;
+double muteRate = 0.1;
+
 void InitGenetic(ZTEGenetic &genetic)
 {
     genetic.LoadGraph("../Graph1.csv");
@@ -15,15 +21,16 @@ void InitGenetic(ZTEGenetic &genetic)
 }
 
 int main(int argc, char *argv[]) {
-    ZTEGenetic genetic1 = ZTEGenetic(100, 9);
+    ZTEGenetic genetic1 = ZTEGenetic(genetics, maxNum, crossRate, muteRate);
     InitGenetic(genetic1);
     genetic1.DisplayGraph();
 
-    for (int i = 0; i < 30; ++i){
+    for (int i = 0; i < generations-1; ++i){
         genetic1.GeneticInfo();
         genetic1.Evolution();
     }
 
+    std::cout << std::endl << "------------\nevolution done!" << std::endl;
     genetic1.GeneticInfo();
 
     getchar();
