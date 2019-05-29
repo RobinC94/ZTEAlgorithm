@@ -5,8 +5,8 @@ using namespace ZTE_crb;
 int generations = 100;
 int genetics = 200;
 int maxNum = 9;
-double crossRate = 0.05;
-double muteRate = 0.1;
+double crossRate = 0.1;
+double muteRate = 0.2;
 
 void InitGenetic(ZTEGenetic &genetic)
 {
