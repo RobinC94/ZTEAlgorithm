@@ -14,7 +14,7 @@
 
 这下小蚁犯难了，这和它们平时找食物的集体活动规则不一样嘛,看来这次需要单独行动了。要怎么选路呢？小蚁经过一番苦思冥想，稿纸堆了一摞，啊，终于找到了！亲爱的同学们，你们能否也设计一种通用的路径搜索算法，来应对各种搜索限制条件，找到一条最优路径，顺利完成蚁后布置的任务呢？
 
-![Image text](https://github.com/RobinC94/ZTEAlgorithm/edit/master/problem/ZTE.png)
+![Image text](https://raw.githubusercontent.com/RobinC94/ZTEAlgorithm/master/problem/ZTE.png)
 
 注：
 
